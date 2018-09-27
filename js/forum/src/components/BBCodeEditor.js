@@ -15,11 +15,11 @@ export default class BBCodeEditor extends TextEditor {
     return (
       <div className="TextEditor">
         <div className={classNames}>
-                  <textarea
-                    config={this.configTextarea.bind(this)}
-                    oninput={m.withAttr('value', this.oninput.bind(this))}
-                    placeholder={this.props.placeholder || ''}
-                    value={this.value()}/>
+          <textarea
+            config={this.configTextarea.bind(this)}
+            oninput={m.withAttr('value', this.oninput.bind(this))}
+            placeholder={this.props.placeholder || ''}
+            value={this.value()}/>
         </div>
         <ul className="TextEditor-controls Composer-footer">
           {listItems(this.controlItems().toArray())}
@@ -52,8 +52,8 @@ export default class BBCodeEditor extends TextEditor {
       resizeEnabled: false,
       toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color,|,' +
       'left,center,right,justify,bulletlist,orderedlist,|,' +
-      'table,code,quote,horizontalrule,|,' +
-      'link,unlink,email,image,|,' +
+      'code,quote,horizontalrule,|,' +
+      // 'link,unlink,email,|,' +
       'removeformat',
     });
 

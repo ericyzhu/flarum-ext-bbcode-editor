@@ -78,7 +78,9 @@ System.register('flarum/bbcode-editor/components/BBCodeEditor', ['flarum/helpers
               resizeHeight: false,
               resizeWidth: false,
               resizeEnabled: false,
-              toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color,|,' + 'left,center,right,justify,bulletlist,orderedlist,|,' + 'table,code,quote,horizontalrule,|,' + 'link,unlink,email,image,|,' + 'removeformat'
+              toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color,|,' + 'left,center,right,justify,bulletlist,orderedlist,|,' + 'code,quote,horizontalrule,|,' +
+              // 'link,unlink,email,|,' +
+              'removeformat'
             });
 
             this.editor = sceditor.instance(element);
@@ -412,7 +414,7 @@ System.register('flarum/bbcode-editor/sceditor/formats/bbcode', ['flarum/bbcode-
 							var editor = this;
 
 							getEditorCommand('image')._dropDown(editor, caller, selected, function (url, width, height) {
-								var attrs = '';
+								var attrs = ' url=' + url;
 
 								if (width) {
 									attrs += ' width=' + width;
@@ -422,7 +424,7 @@ System.register('flarum/bbcode-editor/sceditor/formats/bbcode', ['flarum/bbcode-
 									attrs += ' height=' + height;
 								}
 
-								editor.insertText('[img' + attrs + ']' + url + '[/img]');
+								editor.insertText('[img' + attrs + ']');
 							});
 						}
 					},
@@ -757,6 +759,7 @@ System.register('flarum/bbcode-editor/sceditor/formats/bbcode', ['flarum/bbcode-
 					// START_COMMAND: Image
 					img: {
 						allowsEmpty: true,
+						isSelfClosing: true,
 						tags: {
 							img: {
 								src: null
@@ -777,29 +780,36 @@ System.register('flarum/bbcode-editor/sceditor/formats/bbcode', ['flarum/bbcode-
 								return content;
 							}
 
+							attribs += ' src=' + attr(element, 'src');
+
 							width = attr(element, 'width') || style('width');
 							height = attr(element, 'height') || style('height');
 
-							// only add width and height if one is specified
-							if (element.complete && (width || height) || width && height) {
-
-								attribs = '=' + dom.width(element) + 'x' + dom.height(element);
+							if (width) {
+								attribs += ' width=' + width;
 							}
 
-							return '[img' + attribs + ']' + attr(element, 'src') + '[/img]';
+							if (height) {
+								attribs += ' height=' + height;
+							}
+
+							return '[img' + attribs + ']';
 						},
-						html: function html(token, attrs, content) {
+						html: function html(token, attrs) {
 							var undef,
+							    src,
 							    width,
 							    height,
 							    match,
 							    attribs = '';
 
-							// handle [img width=340 height=240]url[/img]
+							src = attrs.src;
+
+							// handle [img width=340 height=240 src=https://]
 							width = attrs.width;
 							height = attrs.height;
 
-							// handle [img=340x240]url[/img]
+							// handle [img=340x240 src=https://]
 							if (attrs.defaultattr) {
 								match = attrs.defaultattr.split(/x/i);
 
@@ -815,7 +825,7 @@ System.register('flarum/bbcode-editor/sceditor/formats/bbcode', ['flarum/bbcode-
 								attribs += ' height="' + escapeEntities(height, true) + '"';
 							}
 
-							return '<img' + attribs + ' src="' + escapeUriScheme(content) + '" />';
+							return '<img' + attribs + ' src="' + escapeUriScheme(src) + '" />';
 						}
 					},
 					// END_COMMAND

@@ -179,7 +179,7 @@ import sceditor from 'flarum/bbcode-editor/sceditor';
 					caller,
 					selected,
 					function (url, width, height) {
-						var attrs  = '';
+						var attrs  = ' url=' + url;
 
 						if (width) {
 							attrs += ' width=' + width;
@@ -190,7 +190,7 @@ import sceditor from 'flarum/bbcode-editor/sceditor';
 						}
 
 						editor.insertText(
-							'[img' + attrs + ']' + url + '[/img]'
+							'[img' + attrs + ']'
 						);
 					}
 				);
@@ -550,7 +550,8 @@ import sceditor from 'flarum/bbcode-editor/sceditor';
 		// START_COMMAND: Image
 		img: {
 			allowsEmpty: true,
-			tags: {
+      isSelfClosing: true,
+      tags: {
 				img: {
 					src: null
 				}
@@ -569,28 +570,32 @@ import sceditor from 'flarum/bbcode-editor/sceditor';
 					return content;
 				}
 
+				attribs += ' src=' + attr(element, 'src');
+
 				width = attr(element, 'width') || style('width');
 				height = attr(element, 'height') || style('height');
 
-				// only add width and height if one is specified
-				if ((element.complete && (width || height)) ||
-					(width && height)) {
+        if (width) {
+          attribs += ' width=' + width;
+        }
 
-					attribs = '=' + dom.width(element) + 'x' +
-						dom.height(element);
-				}
+        if (height) {
+          attribs += ' height=' + height;
+        }
 
-				return '[img' + attribs + ']' + attr(element, 'src') + '[/img]';
+				return '[img' + attribs + ']';
 			},
-			html: function (token, attrs, content) {
-				var	undef, width, height, match,
+			html: function (token, attrs) {
+				var	undef, src, width, height, match,
 					attribs = '';
 
-				// handle [img width=340 height=240]url[/img]
+				src = attrs.src;
+
+				// handle [img width=340 height=240 src=https://]
 				width  = attrs.width;
 				height = attrs.height;
 
-				// handle [img=340x240]url[/img]
+				// handle [img=340x240 src=https://]
 				if (attrs.defaultattr) {
 					match = attrs.defaultattr.split(/x/i);
 
@@ -607,7 +612,7 @@ import sceditor from 'flarum/bbcode-editor/sceditor';
 				}
 
 				return '<img' + attribs +
-					' src="' + escapeUriScheme(content) + '" />';
+					' src="' + escapeUriScheme(src) + '" />';
 			}
 		},
 		// END_COMMAND
