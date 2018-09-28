@@ -54,7 +54,8 @@ export default class BBCodeEditor extends TextEditor {
         ',|,left,center,right,justify,bulletlist,orderedlist' +
         ',|,code,quote,horizontalrule' +
         // ',|,link,unlink,email' +
-        ',|,removeformat'
+        ',|,removeformat' +
+        ',|,source',
     });
 
     this.editor = sceditor.instance(element);

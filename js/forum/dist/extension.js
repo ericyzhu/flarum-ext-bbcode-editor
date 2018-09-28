@@ -80,7 +80,7 @@ System.register('flarum/bbcode-editor/components/BBCodeEditor', ['flarum/helpers
               resizeEnabled: false,
               toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color' + ',|,left,center,right,justify,bulletlist,orderedlist' + ',|,code,quote,horizontalrule' +
               // ',|,link,unlink,email' +
-              ',|,removeformat'
+              ',|,removeformat' + ',|,source'
             });
 
             this.editor = sceditor.instance(element);
