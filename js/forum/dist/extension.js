@@ -57,7 +57,7 @@ System.register('flarum/bbcode-editor/components/BBCodeEditor', ['flarum/helpers
           value: function configTextarea(element, isInitialized) {
             var _this2 = this;
 
-            if (this.editor !== null) {
+            if (this.editor !== null && !$('.item-discussionTitle input').length) {
               this.editor.focus();
             }
 
@@ -78,9 +78,9 @@ System.register('flarum/bbcode-editor/components/BBCodeEditor', ['flarum/helpers
               resizeHeight: false,
               resizeWidth: false,
               resizeEnabled: false,
-              toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color,|,' + 'left,center,right,justify,bulletlist,orderedlist,|,' + 'code,quote,horizontalrule,|,' +
-              // 'link,unlink,email,|,' +
-              'removeformat'
+              toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color' + ',|,left,center,right,justify,bulletlist,orderedlist' + ',|,code,quote,horizontalrule' +
+              // ',|,link,unlink,email' +
+              ',|,removeformat'
             });
 
             this.editor = sceditor.instance(element);
@@ -804,6 +804,10 @@ System.register('flarum/bbcode-editor/sceditor/formats/bbcode', ['flarum/bbcode-
 							    attribs = '';
 
 							src = attrs.src;
+
+							if (src === undef) {
+								return '';
+							}
 
 							// handle [img width=340 height=240 src=https://]
 							width = attrs.width;

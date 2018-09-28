@@ -29,7 +29,7 @@ export default class BBCodeEditor extends TextEditor {
   }
 
   configTextarea(element, isInitialized) {
-    if (this.editor !== null) {
+    if (this.editor !== null && !$('.item-discussionTitle input').length) {
       this.editor.focus();
     }
 
@@ -50,11 +50,11 @@ export default class BBCodeEditor extends TextEditor {
       resizeHeight: false,
       resizeWidth: false,
       resizeEnabled: false,
-      toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color,|,' +
-      'left,center,right,justify,bulletlist,orderedlist,|,' +
-      'code,quote,horizontalrule,|,' +
-      // 'link,unlink,email,|,' +
-      'removeformat',
+      toolbar: 'bold,italic,underline,strike,subscript,superscript,size,color' +
+        ',|,left,center,right,justify,bulletlist,orderedlist' +
+        ',|,code,quote,horizontalrule' +
+        // ',|,link,unlink,email' +
+        ',|,removeformat'
     });
 
     this.editor = sceditor.instance(element);

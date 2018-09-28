@@ -591,6 +591,10 @@ import sceditor from 'flarum/bbcode-editor/sceditor';
 
 				src = attrs.src;
 
+				if (src === undef) {
+					return '';
+				}
+
 				// handle [img width=340 height=240 src=https://]
 				width  = attrs.width;
 				height = attrs.height;
